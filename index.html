@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hey Sakshi Pote</title>
+    <title>Hey Aman Dubey</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@600&display=swap"
         rel="stylesheet">
@@ -61,7 +61,7 @@
         }
 
         #bg-blurred {
-            background-image: url('1.jpeg');
+            background-image: url('1.jpg');
             background-size: cover;
             background-position: center;
             filter: blur(5px);
@@ -554,7 +554,7 @@
     <!-- Page 1 -->
     <div id="page1" class="page active">
         <div class="container animate-fadeIn">
-            <h1>Hey, Sakshi Pote</h1>
+            <h1>Hey, Aman Dubey</h1>
             <p class="mood-text animate-slideIn-1">Sunne mai aaya hai tera mood off... <br>Mai huna tera mood banane ke
                 liye&#x1F31A;</p>
             <p class="instruction animate-slideIn-2">Chal aab jada reaction mat de niche jo button hai uspe click kar!!!
@@ -577,7 +577,8 @@
                 Main tujhko Rab ka darja doon, toh ye khuda naaraaz hai
                 Tujhko sabr se padha, pasandita kitaab hai
             </div>
-            <button class="btn btn-blue btn-transparent" onclick="goToPage(3)">Chala Chala Aab Aage Bad</button>
+            <button class="btn btn-blue btn-transparent" onclick="playAudioAndGoToPage(3)">Chala Chala Aab Aage
+                Bad</button>
         </div>
     </div>
 
@@ -586,9 +587,9 @@
         <div class="container animate-fadeIn">
             <h1>Ufff jitna jadu pure Bengal mai nahi hai utna toh apki 2 Aankho mai hai</h1>
             <div class="image-container">
-                <img src="2.jpeg" alt="Special Image" class="styled-image">
+                <img src="2.jpg" alt="Special Image" class="styled-image">
             </div>
-            <audio controls class="audio-player" preload="metadata">
+            <audio id="mainAudio" controls class="audio-player" preload="metadata">
                 <source src="aaja_piya_tohe_pyar_du.mp3" type="audio/mpeg">
                 <source src="aaja_piya_tohe_pyar_du.mp3" type="audio/mp3">
                 Your browser does not support the audio element.
@@ -614,7 +615,7 @@
         <div class="container animate-fadeIn success-content">
             <h1>Chalo Finally Kuch Acha Decision Lii</h1>
             <p class="mood-text">Isliye tereko mai BKL bolta hu ❤️</p>
-            <span class="celebration-emoji">💖✨🎉</span>
+            <!-- <span class="celebration-emoji">💖✨🎉</span> -->
         </div>
     </div>
 
@@ -643,6 +644,16 @@
 
             updateBackground(pageId);
             updateBackButton(pageId);
+        }
+
+        function playAudioAndGoToPage(pageId) {
+            const audio = document.getElementById('mainAudio');
+            if (audio) {
+                audio.play().catch(error => {
+                    console.log("Audio play failed, likely browser policy:", error);
+                });
+            }
+            goToPage(pageId);
         }
 
         function handleNoClick() {
@@ -719,6 +730,5 @@
         });
     </script>
 </body>
-
 
 </html>
