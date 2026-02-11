@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey Aman Dubey</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+            /* Fallback */
+        }
+
+        /* --- Backgrounds --- */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        .bg-layer.active {
+            opacity: 1;
+        }
+
+        #bg-default {
+            background-image: url('indexbg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        #bg-default::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        #bg-blurred {
+            background-image: url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            transform: scale(1.05);
+        }
+
+        #bg-blurred-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #bg-blurred-overlay.active {
+            opacity: 1;
+        }
+
+        /* --- Pages --- */
+        .page {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* --- Containers --- */
+        .container {
+            position: relative;
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- Typography --- */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #ff9a9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .mood-text {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: #f1f1f1;
+        }
+
+        .instruction {
+            font-size: 1.0rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Page 2 Specifics */
+        .page-2 .container {
+            max-width: 600px;
+        }
+
+        .page-2 h1 {
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            -webkit-text-fill-color: #ffecd2;
+            /* Reset gradient text for this one */
+            background: none;
+            color: #ffecd2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+        }
+
+        .poem {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 400;
+            white-space: pre-line;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Page 3 Specifics */
+        .page-3 h1 {
+            font-size: 2rem;
+            line-height: 1.4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            background: none;
+            -webkit-text-fill-color: white;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .page-3 .container {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .styled-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 60vh;
+            border: 3px solid black;
+            padding: 1px;
+            background-color: white;
+            background-clip: content-box;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        .audio-player {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+            height: 40px;
+            border-radius: 20px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-player:hover {
+            opacity: 1;
+        }
+
+        .btn-transparent {
+            background: rgba(79, 172, 254, 0.4) !important;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .btn-transparent:hover {
+            background: rgba(79, 172, 254, 0.6) !important;
+        }
+
+        .btn-transparent-red {
+            background: rgba(255, 65, 108, 0.4) !important;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .btn-transparent-red:hover {
+            background: rgba(255, 65, 108, 0.6) !important;
+        }
+
+        /* --- Buttons --- */
+        .valentine-text {
+            font-size: 3rem;
+            font-family: 'Dancing Script', cursive;
+            margin-bottom: 40px;
+            color: #ff4b2b;
+            text-shadow: 2px 2px 8px rgba(255, 75, 43, 0.3);
+        }
+
+        .val-btn-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 200px;
+        }
+
+        #yesBtn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        #noBtn {
+            background: #666;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .success-content h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        .celebration-emoji {
+            font-size: 5rem;
+            margin-top: 20px;
+            display: block;
+            animation: bounceIn 1s infinite alternate;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .btn-blue {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-blue:hover {
+            box-shadow: 0 8px 20px rgba(0, 242, 254, 0.5);
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+        }
+
+        .btn:active {
+            transform: translateY(-2px);
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            z-index: 100;
+            display: none;
+            /* Hidden on first page */
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+
+            50% {
+                opacity: 0.9;
+                transform: scale(1.1);
+            }
+
+            80% {
+                transform: scale(0.89);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(40, 40);
+                opacity: 0;
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 1.2s ease-out both;
+        }
+
+        .animate-slideIn-1 {
+            animation: slideIn 1s ease-out 0.3s both;
+        }
+
+        .animate-slideIn-2 {
+            animation: slideIn 1s ease-out 0.6s both;
+        }
+
+        .animate-bounceIn {
+            animation: bounceIn 1s ease-out 0.9s both;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .mood-text {
+                font-size: 1.2rem;
+            }
+
+            .instruction {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.1rem;
+            }
+
+            .page-2 h1 {
+                font-size: 2rem;
+            }
+
+            .page-3 h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .valentine-text {
+                font-size: 2.2rem;
+            }
+
+            .success-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .mood-text {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+
+            .instruction {
+                font-size: 0.9rem;
+                margin-bottom: 25px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .page-2 h1 {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+
+            .poem {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .page-3 h1 {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+
+            .page-3 .container {
+                gap: 20px;
+                padding: 0 20px;
+            }
+
+            .back-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                top: 15px;
+                left: 15px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .mood-text {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                font-size: 0.9rem;
+            }
+
+            .page-2 h1 {
+                font-size: 1.4rem;
+            }
+
+            .poem {
+                font-size: 0.85rem;
+            }
+
+            .page-3 h1 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Layers -->
+    <div id="bg-default" class="bg-layer active"></div>
+    <div id="bg-blurred" class="bg-layer"></div>
+    <div id="bg-blurred-overlay" class="bg-layer"></div>
+
+    <!-- Navigation -->
+    <button id="backBtn" class="back-btn" onclick="goBack()">← Back</button>
+
+    <!-- Page 1 -->
+    <div id="page1" class="page active">
+        <div class="container animate-fadeIn">
+            <h1>Hey, Aman Dubey</h1>
+            <p class="mood-text animate-slideIn-1">Sunne mai aaya hai tera mood off... <br>Mai huna tera mood banane ke
+                liye&#x1F31A;</p>
+            <p class="instruction animate-slideIn-2">Chal aab jada reaction mat de niche jo button hai uspe click kar!!!
+            </p>
+            <button class="btn animate-bounceIn btn-transparent-red" onclick="goToPage(2)">Start Bol Start</button>
+        </div>
+    </div>
+
+    <!-- Page 2 -->
+    <div id="page2" class="page page-2">
+        <div class="container animate-fadeIn">
+            <h1>Kuch Lines aapke liye...</h1>
+            <div class="poem">
+                Haan, tujhko chaand kahun, chamakti be-misaal hai
+                Par tujhko chaand kyun kahun, lage toh usme daag hai
+                Main tujhko phool sa kahun, sugandh kya be-misaal hai
+                Par tujhko phool kyun kahun, murjaata vo bhi baad mein
+
+                Main tujhko kuch bhi kahun, toh ye kalam mein daag hai
+                Main tujhko Rab ka darja doon, toh ye khuda naaraaz hai
+                Tujhko sabr se padha, pasandita kitaab hai
+            </div>
+            <button class="btn btn-blue btn-transparent" onclick="goToPage(3)">Chala Chala Aab Aage Bad</button>
+        </div>
+    </div>
+
+    <!-- Page 3 -->
+    <div id="page3" class="page page-3">
+        <div class="container animate-fadeIn">
+            <h1>Ufff jitna jadu pure Bengal mai nahi hai utna toh apki 2 Aankho mai hai</h1>
+            <div class="image-container">
+                <img src="2.jpg" alt="Special Image" class="styled-image">
+            </div>
+            <audio controls class="audio-player" preload="metadata">
+                <source src="aaja_piya_tohe_pyar_du.mp3" type="audio/mpeg">
+                <source src="aaja_piya_tohe_pyar_du.mp3" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+            <button class="btn btn-blue btn-transparent" style="margin-top: 30px;" onclick="goToPage(4)">Sorry haa ya
+                last button hai...</button>
+        </div>
+    </div>
+
+    <!-- Page 4: Valentine Question -->
+    <div id="page4" class="page">
+        <div class="container animate-fadeIn">
+            <h1 class="valentine-text">Chalegi Ya Valentine Kahi Ghumne </h1>
+            <div class="val-btn-container">
+                <button id="yesBtn" class="btn" onclick="goToPage(5)">Yes</button>
+                <button id="noBtn" class="btn" onclick="handleNoClick()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 5: Success -->
+    <div id="page5" class="page">
+        <div class="container animate-fadeIn success-content">
+            <h1>Chalo Finally Kuch Acha Decision Lii</h1>
+            <p class="mood-text">Isliye tereko mai BKL bolta hu ❤️</p>
+            <span class="celebration-emoji">💖✨🎉</span>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 5;
+        let yesBtnScale = 1;
+
+        function goToPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById('page' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                currentPage = pageId;
+            }
+
+            // Reset Yes button if leaving page 4
+            if (pageId !== 4) {
+                resetYesButton();
+            }
+
+            updateBackground(pageId);
+            updateBackButton(pageId);
+        }
+
+        function handleNoClick() {
+            const yesBtn = document.getElementById('yesBtn');
+            yesBtnScale += 0.2;
+            yesBtn.style.transform = `scale(${yesBtnScale})`;
+
+            // Optional: make No button slightly smaller or move it
+            const noBtn = document.getElementById('noBtn');
+            const noBtnScale = Math.max(0.5, 1 - (yesBtnScale - 1) * 0.5);
+            noBtn.style.transform = `scale(${noBtnScale})`;
+        }
+
+        function resetYesButton() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            if (yesBtn) {
+                yesBtnScale = 1;
+                yesBtn.style.transform = 'scale(1)';
+            }
+            if (noBtn) {
+                noBtn.style.transform = 'scale(1)';
+            }
+        }
+
+        function goBack() {
+            if (currentPage > 1) {
+                // If on page 5, maybe don't allow back? Or allow back to 4.
+                // The prompt implies page 5 is final, but let's allow back for better UX.
+                goToPage(currentPage - 1);
+            }
+        }
+
+        function updateBackground(pageId) {
+            const bgDefault = document.getElementById('bg-default');
+            const bgBlurred = document.getElementById('bg-blurred');
+            const bgBlurredOverlay = document.getElementById('bg-blurred-overlay');
+
+            if (pageId === 2) {
+                bgDefault.classList.remove('active');
+                bgBlurred.classList.add('active');
+                bgBlurredOverlay.classList.add('active');
+            } else if (pageId === 4 || pageId === 5) {
+                // Maybe a more romantic background for valentine pages?
+                // For now, let's stick to default or blurred.
+                bgBlurred.classList.remove('active');
+                bgBlurredOverlay.classList.remove('active');
+                bgDefault.classList.add('active');
+            } else {
+                bgBlurred.classList.remove('active');
+                bgBlurredOverlay.classList.remove('active');
+                bgDefault.classList.add('active');
+            }
+        }
+
+        function updateBackButton(pageId) {
+            const backBtn = document.getElementById('backBtn');
+            // Hide back button on first page and final success page
+            if (pageId > 1 && pageId < 5) {
+                backBtn.style.display = 'block';
+            } else {
+                backBtn.style.display = 'none';
+            }
+        }
+
+        // Audio error handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.querySelector('.audio-player');
+            if (audio) {
+                audio.addEventListener('error', (e) => {
+                    console.error('Audio error details:', audio.error);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
